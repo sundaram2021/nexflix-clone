@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Banner from '../components/Banner/Banner'
+import Card from '../components/Card/Card'
 import Navbar from '../components/Navbar/Navbar'
 // import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -18,6 +19,9 @@ export default function Home() {
         subTitle="a very cute dog"
         imgUrl="/static/reddog.webp"
       />
+      <Card imgUrl="/static/reddog.webp" size="large"/>
+      <Card  size="medium"/>
+      <Card imgUrl="/static/reddog.webp" size="small"/>
     </div>
   )
 }
