@@ -5,6 +5,7 @@ import SectionCards from "../components/Card/SectionCards";
 import styles from "../styles/Home.module.css";
 import { getPopularVideos, getVideos } from "../components/lib/videos";
 
+
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailer");
   const productivityVideos = await getVideos("Productivity");
@@ -21,6 +22,7 @@ export default function Home({
   travelVideos,
   popularVideos,
 }) {
+
   return (
     <div className={styles.container}>
       <Head>

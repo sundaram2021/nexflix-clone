@@ -51,7 +51,6 @@ function Navbar(props) {
               >
                 {username}
               </p>
-              {/* expand more icons */}
               <Image
                 src="/static/expand_more.svg"
                 alt="Expand"
