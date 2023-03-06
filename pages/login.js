@@ -27,8 +27,9 @@ function login() {
     });
 
     if (res.ok) {
-      const  { message, token } = await res.json();
-      localStorage.setItem("netflix-token", token)
+      const  { message, token, email } = await res.json();
+      localStorage.setItem("netflix-token", token);
+      localStorage.setItem('netflix-email', email);
       alert(message);
       router.push("/");
     }
@@ -40,7 +41,7 @@ function login() {
 
   return (
     <div className={styles.container}>
-      <Head>
+      <Head> 
         <title>Netflix SignIn</title>
       </Head>
       <header className={styles.header}>
