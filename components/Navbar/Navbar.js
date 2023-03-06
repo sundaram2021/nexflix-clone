@@ -19,6 +19,10 @@ function Navbar(props) {
     router.push("/browse/my-list");
   };
 
+  const handleSignOut = () => {
+    localStorage.removeItem("netflix-email")
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -43,33 +47,35 @@ function Navbar(props) {
           </li>
         </ul>
         <nav className={styles.navCotainer}>
-          <div>
-            <button className={styles.usernameBtn}>
-              <p
-                className={styles.username}
-                onClick={() => setSignOut(!signOut)}
-              >
-                {username}
-              </p>
-              <Image
-                src="/static/expand_more.svg"
-                alt="Expand"
-                width={24}
-                height={24}
-                style={{ color: "White" }}
-              />
-            </button>
-            {signOut && (
-              <div className={styles.navDropdown}>
-                <div >
-                  <Link href="/login" legacyBehavior >
-                    <a className={styles.linkName}>Sign Out</a>
-                  </Link>
-                  <div className={styles.lineWrapper}></div>
+          {!(username === "") && (
+            <div>
+              <button className={styles.usernameBtn}>
+                <p
+                  className={styles.username}
+                  onClick={() => setSignOut(!signOut)}
+                >
+                  {username}
+                </p>
+                <Image
+                  src="/static/expand_more.svg"
+                  alt="Expand"
+                  width={24}
+                  height={24}
+                  style={{ color: "White" }}
+                />
+              </button>
+              {signOut && (
+                <div className={styles.navDropdown} >
+                  <div>
+                    <Link href="/login" legacyBehavior onClick={handleSignOut}>
+                      <a className={styles.linkName}>Sign Out</a>
+                    </Link>
+                    <div className={styles.lineWrapper}></div>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </nav>
       </div>
     </div>
