@@ -1,44 +1,41 @@
+import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRouter } from 'next/router'
 import styles from "../styles/Login.module.css";
-import { magic } from  '../components/lib/magic';
-
 
 function login() {
   const router = useRouter();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
   const [userMsg, setUserMsg] = useState("");
-  const [userEmail, setUserEmail] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    console.log("btn clicked");
-    if (userEmail) {
-      // router.push("/");
-      //  log in a user by their email
-      if(userEmail === "jhasundarm@gmail.com"){
-        try {
-          const didToken = await magic.auth.loginWithMagicLink({
-            email : userEmail,
-          });
-          console.log({ didToken });
-        } catch (error) {
-          // Handle errors if required!
-          console.error("Something went wrong logging in", error);
-        }
-      } else {
-        setUserMsg("Something went wrong in logging in")
-      }
-    } else {
-      setUserMsg("Enter a valid Email address");
-    }
+  const form = {
+    email: email,
+    password: password,
   };
 
-  const handleEmailChange = (e) => {
-    setUserMsg("");
-    const email = e.target.value;
-    setUserEmail(email);
+  const handleSubmit = async (e) => {
+    // e.preventDefault();
+
+    const res = await fetch("http://localhost:7999/api/login", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (res.ok) {
+      const  { message, token } = await res.json();
+      localStorage.setItem("netflix-token", token)
+      alert(message);
+      router.push("/");
+    }
+
+    if (!res.ok) {
+      setUserMsg("Please login again");
+    }
   };
 
   return (
@@ -66,10 +63,16 @@ function login() {
             type="text"
             placeholder="Email address"
             className={styles.emailInput}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="password..."
+            className={styles.emailInput}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <p className={styles.userMsg}>{userMsg}</p>
-          <button onClick={handleLogin} className={styles.loginBtn}>
+          <button className={styles.loginBtn} onClick={(e) => handleSubmit(e)}>
             Sign In
           </button>
         </div>
