@@ -63,8 +63,13 @@ export const login = async (req, res) => {
       httpOnly: true, // The cookie only accessible by the web server
     };
 
-    return res.json({ message: "login success", token });
+    return res.json({ message: "login success", token, email: user.email });
   } catch (err) {
     return res.status(408).json({ message: "server error" });
   }
 };
+
+
+export const getEmail = async(req, res) => {
+  
+}
