@@ -22,8 +22,12 @@ export default function Home({
   travelVideos,
   popularVideos,
 }) {
+  let userEmail;
+  if(typeof window !== undefined){
+    userEmail = localStorage.getItem('netflix-email')
+  }
 
-  return (
+  return (!(userEmail === "") && 
     <div className={styles.container}>
       <Head>
         <title>Netflix</title>
@@ -31,7 +35,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
-        <Navbar username="jhasundarm@gmail.com" />
+        <Navbar username={userEmail} />
         <Banner
           title="Clifford the red dog"
           subTitle="a very cute dog"
