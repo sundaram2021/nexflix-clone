@@ -73,3 +73,20 @@ export const login = async (req, res) => {
 export const getEmail = async(req, res) => {
   
 }
+
+export const HomeGet = async (req, res) => {
+  const token = req.headers["x-access-token"];
+//   console.log(token);
+  try {
+  	const decoded = jwt.verify(token, process.env.JWT_SECRET)
+  	const email = decoded.email
+  	const user = await RegisterSchema.findOne({ email: email })
+    const Email = user.email
+
+    // console.log('decoded-email => ', decoded.email);
+  	return res.status(200).json({ status: 'ok', email: Email })
+  } catch (error) {
+  	console.log(error)
+  	res.json({ status: 'error', error: 'invalid token' })
+  }
+};
