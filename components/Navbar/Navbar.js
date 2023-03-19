@@ -3,11 +3,16 @@ import styles from "./Navbar.module.css";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 function Navbar(props) {
   const [signOut, setSignOut] = useState(false);
-  const { username } = props;
+  let { userEmail } = props;
   const router = useRouter();
+
+  if(userEmail === undefined || userEmail=== null){
+    userEmail = "undefined user name";
+  }
 
   const handleHomeClick = (e) => {
     e.preventDefault();
@@ -20,7 +25,7 @@ function Navbar(props) {
   };
 
   const handleSignOut = () => {
-    localStorage.removeItem("netflix-email")
+    Cookies.remove("netflix-cookie-email");
   }
 
   return (
@@ -47,14 +52,14 @@ function Navbar(props) {
           </li>
         </ul>
         <nav className={styles.navCotainer}>
-          {!(username === "") && (
+          {!(userEmail === "") && (
             <div>
               <button className={styles.usernameBtn}>
                 <p
                   className={styles.username}
                   onClick={() => setSignOut(!signOut)}
                 >
-                  {username}
+                  {userEmail}
                 </p>
                 <Image
                   src="/static/expand_more.svg"
