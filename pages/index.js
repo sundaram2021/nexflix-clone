@@ -4,7 +4,9 @@ import Navbar from "../components/Navbar/Navbar";
 import SectionCards from "../components/Card/SectionCards";
 import styles from "../styles/Home.module.css";
 import { getPopularVideos, getVideos } from "../components/lib/videos";
-
+import Cookies from "js-cookie";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailer");
@@ -22,12 +24,45 @@ export default function Home({
   travelVideos,
   popularVideos,
 }) {
-  let userEmail;
-  if(typeof window !== undefined){
-    userEmail = localStorage.getItem('netflix-email')
+  const [userEmail, setUserEmail] = useState();
+
+  useEffect(() => {
+    const getTokenAndFetchEmail = async () => {
+      const token = Cookies.get("netflix-cookie-token");
+
+      console.log(token);
+
+      const res1 = await fetch("http://localhost:7999", {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "x-access-token": token,
+        },
+      });
+
+      const { email } = await res1.json();
+      // const resJson = JSON.parse(resText);
+      
+      setUserEmail(email)
+      console.log("email", email);
+    };
+
+    getTokenAndFetchEmail();
+  }, []);
+
+  if (userEmail === "") {
+    return <Link href="/login">Login</Link>;
   }
 
-  return (!(userEmail === "") && 
+  console.log("userEmail => ",userEmail);
+
+  return userEmail  ? (
+    <center>
+      <h1>
+        <Link href="/login">Login</Link>
+      </h1>
+    </center>
+  ) : (
     <div className={styles.container}>
       <Head>
         <title>Netflix</title>
@@ -35,7 +70,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
-        <Navbar username={userEmail} />
+        <Navbar userEmail={userEmail} />
         <Banner
           title="Clifford the red dog"
           subTitle="a very cute dog"
