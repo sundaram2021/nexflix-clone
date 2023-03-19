@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from 'next/router'
 import styles from "../styles/Login.module.css";
+import Cookies from 'js-cookie';
 
 function login() {
   const router = useRouter();
@@ -28,8 +29,8 @@ function login() {
 
     if (res.ok) {
       const  { message, token, email } = await res.json();
-      localStorage.setItem("netflix-token", token);
-      localStorage.setItem('netflix-email', email);
+      Cookies.set('netflix-cookie-token', token, { expires: 7 });
+      Cookies.set('netflix-cookie-email', email, { expires: 7 });
       alert(message);
       router.push("/");
     }
