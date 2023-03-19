@@ -1,48 +1,46 @@
-import  { useState } from 'react';
+import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Login.module.css";
-import { useRouter } from 'next/router'
-
+import { useRouter } from "next/router";
 
 function register() {
-    const router = useRouter()
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
-    // const [userMsg, setUserMsg] = useState('');
-    const [validEmail, setValidEmail] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  // const [userMsg, setUserMsg] = useState('');
+  const [validEmail, setValidEmail] = useState(false);
 
-    const form = {
-        email : email,
-        password: password
+  const form = {
+    email: email,
+    password: password,
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // setValidEmail(emailRegex.test(email));
+
+    if (email.includes("@")) {
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
     }
 
-    const handleSubmit = async(e) => {
-        e.preventDefault();
-        // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const res = await fetch("http://localhost:7999/api/register", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-        // setValidEmail(emailRegex.test(email));
-
-        if(email.includes("@")){
-            setValidEmail(true)
-        } else {
-            setValidEmail(false);
-        }
-
-        const res = await fetch("http://localhost:7999/api/register", {
-            method: "POST",
-            body: JSON.stringify(form),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-
-        if(!res.ok){
-            alert("You are registered successfully");
-            router.push("/login");
-        }
-        
+    if (!res.ok) {
+      alert("You are registered successfully");
+      router.push("/login");
     }
+  };
 
   return (
     <div className={styles.container}>
@@ -69,16 +67,18 @@ function register() {
             type="text"
             placeholder="Email address"
             className={styles.emailInput}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="text"
             placeholder="password..."
             className={styles.emailInput}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <p className={styles.userMsg}>{ !validEmail ? "Enter a valid email" : "" } </p>
-          <button  className={styles.loginBtn} onClick={(e) => handleSubmit(e)}>
+          <p className={styles.userMsg}>
+            {!validEmail ? "Enter a valid email" : ""}{" "}
+          </p>
+          <button className={styles.loginBtn} onClick={(e) => handleSubmit(e)}>
             Register
           </button>
         </div>
