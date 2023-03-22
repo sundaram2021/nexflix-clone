@@ -72,7 +72,7 @@ export default function Home({
       <div className={styles.main}>
         <Navbar userEmail={userEmail} />
         <Banner
-          videoId="kpGo2_d3oYE"
+          videoId="4zH5iYM4wJo"
           title="Clifford the red dog"
           subTitle="a very cute dog"
           imgUrl="/static/reddog.webp"
