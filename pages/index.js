@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+
 export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailer");
   const productivityVideos = await getVideos("Productivity");
@@ -55,6 +56,7 @@ export default function Home({
   }
 
   console.log("userEmail => ",userEmail);
+
 
   return userEmail  ? (
     <center>
